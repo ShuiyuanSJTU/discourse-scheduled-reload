@@ -1,20 +1,12 @@
 # frozen_string_literal: true
 
-# name: discourse-plugin-name
-# about: TODO
+# name: discourse-scheduled-reload
+# about: reload unicourn every 6 hours without downtime
 # version: 0.0.1
-# authors: Discourse
-# url: TODO
+# authors: pangbo
+# url: https://github.com/ShuiyuanSJTU/discourse-scheduled-reload
 # required_version: 2.7.0
 
-enabled_site_setting :plugin_name_enabled
-
-module ::MyPluginModule
-  PLUGIN_NAME = "discourse-plugin-name"
-end
-
-require_relative "lib/my_plugin_module/engine"
-
 after_initialize do
-  # Code which should run after Rails has finished booting
+  require_relative "app/jobs/scheduled/scheduled-reload.rb"
 end
