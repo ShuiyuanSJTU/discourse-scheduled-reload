@@ -13,6 +13,12 @@ module ::Jobs
             end
         end
 
+        def pid_exists?(pid)
+            Process.getpgid(pid)
+          rescue Errno::ESRCH
+            false
+        end
+
         def unicorn_launcher_pid
             `ps aux | grep unicorn_launcher | grep -v sudo | grep -v grep | awk '{ print $2 }'`.strip.to_i
         end
