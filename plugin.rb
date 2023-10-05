@@ -2,7 +2,7 @@
 
 # name: discourse-scheduled-reload
 # about: reload unicourn every 6 hours without downtime
-# version: 0.0.1
+# version: 0.0.2
 # authors: pangbo
 # url: https://github.com/ShuiyuanSJTU/discourse-scheduled-reload
 # required_version: 2.7.0

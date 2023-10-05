@@ -4,13 +4,10 @@
 
 module ::Jobs
     class ScheduleReload < ::Jobs::Scheduled
-        every 6.hours
+        every 3.hours
     
         def execute(args)
-            fork do
-                Process.setsid
-                reload_unicorn(unicorn_launcher_pid)
-            end
+            Process.kill("USR2", unicorn_launcher_pid)
         end
 
         def pid_exists?(pid)
@@ -35,23 +32,5 @@ module ::Jobs
             "http://127.0.0.1:#{ENV["UNICORN_PORT"] || 3000}/srv/status"
         end
         
-        def reload_unicorn(launcher_pid)
-            original_master_pid = unicorn_master_pid
-            Process.kill("USR2", launcher_pid)
-        
-            iterations = 0
-            while pid_exists?(original_master_pid)
-            iterations += 1
-            break if iterations >= 60
-            sleep 2
-            end
-        
-            iterations = 0
-            while `curl -s #{local_web_url}` != "ok"
-            iterations += 1
-            break if iterations >= 60
-            sleep 2
-            end
-        end
     end
   end
